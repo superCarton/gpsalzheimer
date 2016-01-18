@@ -10,6 +10,7 @@ www
 .tmp
 .sass-cache
 <%= appPath %>/bower_components
+<%= appPath %>/lib
 coverage
 platforms
 plugins
@@ -17,3 +18,8 @@ plugins
 *.swo
 *.log
 *.DS_Store
+
+.idea
+
+
+
