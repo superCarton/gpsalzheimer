@@ -1,5 +1,11 @@
 /* Empty. Add your own CSS if you like */
 
+.localisationimg{
+  margin-top:92%;
+  width:155%;
+  height:60%;
+}
+
 .button-positive{
   height:100px;
 }
@@ -14,6 +20,7 @@
   color:white;
   font-size: 20px;
 }
+
 #menu{
   background-color: rgb(220,221,205);
 }
