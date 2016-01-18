@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectModuleManager">
+<<<<<<< HEAD
+    <modules />
+=======
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/tablet.iml" filepath="$PROJECT_DIR$/.idea/tablet.iml" />
     </modules>
+>>>>>>> 55bcfe7a35b1bb49842c5b9fab216021555b31f0
   </component>
 </project>
