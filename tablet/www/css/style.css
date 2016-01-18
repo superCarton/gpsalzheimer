@@ -1,4 +1,19 @@
 /* Empty. Add your own CSS if you like */
 
-.table-container{
+.button-positive{
+  height:100px;
+}
+
+
+.bar-header{
+  background-color: rgb(54,54,53);
+  font-color:white;
+}
+
+.bar-header > h1{
+  color:white;
+  font-size: 20px;
+}
+#menu{
+  background-color: rgb(220,221,205);
 }
