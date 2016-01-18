@@ -6,10 +6,10 @@
  * This function is a color maker.
  * It makes unique color id.
  */
-function* colorMaker (){
+function* colorMaker () {
     var colorId = 0;
-    while(colorId >= 0)
+    while (colorId >= 0)
         yield colorId++;
 }
 
-module.exports = colorMaker();
+module.exports = colorMaker;

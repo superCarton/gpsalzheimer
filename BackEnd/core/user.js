@@ -4,8 +4,8 @@
  * Created by guillaume on 18/01/2016.
  */
 
-var idGenerator = require('./id.js')();
-var colorIdGenerator = require('./color.js')();
+var idGenerator      = require('./id.js')(),
+    colorIdGenerator = require('./color.js')();
 
 /**
  * This class represent a user. The one that has the watch and the smartphone.
@@ -13,8 +13,8 @@ var colorIdGenerator = require('./color.js')();
 class User {
 
     constructor () {
-        this._id = idGenerator.next().value;
-        this._color = colorIdGenerator.next().value;
+        this._id    = idGenerator.next().value;
+        this._color = colorIdGenerator.next().value % 7;
     }
 
     get id () {

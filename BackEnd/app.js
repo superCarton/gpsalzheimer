@@ -25,12 +25,11 @@ app.use(function (req, res, next) {
     next();
 });
 
-
 /**
  * Server on port 3000.
  */
 http.listen(3000, function () {
 
-    console.log('Backend Mini Golf started and ready ...');
+    console.log('Backend GPS started and ready ...');
 
 });
