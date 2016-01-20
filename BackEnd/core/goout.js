@@ -9,6 +9,18 @@
  */
 class GoOut {
 
+    constructor (){
+        this._users = [];
+    }
+
+    get users (){
+        return this._users;
+    }
+
+    addUser (user){
+        this.users.push(user);
+    }
+
 }
 
 module.exports = GoOut;
