@@ -43,7 +43,7 @@ class User {
      * Getter of the position.
      * @returns {Position} The user's position.
      */
-    get pos () {
+    get position () {
         return this._position;
     }
 
@@ -51,7 +51,7 @@ class User {
      * Setter of the position.
      * @param {Position} newPos - The new user's position.
      */
-    set pos (newPos){
+    set position (newPos){
         this._position = newPos;
     }
 
