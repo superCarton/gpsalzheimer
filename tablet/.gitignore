@@ -5,8 +5,7 @@ node_modules/
 platforms/
 plugins/
 
-node_modules
-www
+www/lib
 .tmp
 .sass-cache
 <%= appPath %>/bower_components
@@ -17,4 +16,4 @@ plugins
 *.swo
 *.log
 *.DS_Store
-.idea
+.idea/
