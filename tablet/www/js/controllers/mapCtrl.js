@@ -24,11 +24,44 @@ angular.module('starter').controller('MapCtrl',  function ($scope, $state, $cord
       center: latLng
     });
 
-    var image = 'img/b.png';
-    var image2 = 'img/bleu.png';
-    var image3 = 'img/ionic.png';
+    var image = 'img/localisation.png';
+    var image2 = 'img/localisation2.png';
+    var image3 = 'img/localisation3.png';
+    var imageList=[image,image2,image3];
+
+    $scope.personList;
+    $scope.markerList;
 
     socket.connect();
+
+    socket.getPerson().then(
+      function(data){
+        console.log("data person list: ",data);
+        $scope.personList=data;
+        initMarkers();
+      },
+      function (msg){
+        console.log("error getbackscore homepage",msg);
+      }
+
+    );
+
+
+
+    $scope.initMarkers= function(){
+      var allmarker= new Array();
+      for(var i=0; i<$scope.personList.length;i++){
+        var marker = new google.maps.Marker({
+          position: {lat: $scope.personList[i]._position._latitude, lng: $scope.personList[i]._position._longitude},
+          map: map,
+          icon: imageList[i]
+        });
+        allmarker.push(marker);
+      }
+      $scope.markerList=allmarker;
+    }
+
+    /*
 
     var marker = new google.maps.Marker({
       position: {lat: 43.615377, lng: 7.07185},
@@ -55,7 +88,7 @@ angular.module('starter').controller('MapCtrl',  function ($scope, $state, $cord
     });
    // marker3.addListener('click', toggleBounce);
 
-
+*/
 
     //Wait until the map is loaded
     google.maps.event.addListenerOnce(map, 'idle', function(){
