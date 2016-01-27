@@ -71,6 +71,15 @@ class User {
         this._frequency = newFrequency
     }
 
+    /**
+     * This function updates the user position.
+     * @param {number} newLatitude - The new latitude.
+     * @param {number} newLongitude - The new longitude.
+     */
+    updatePosition (newLatitude, newLongitude) {
+        this.position = new Position(newLatitude, newLongitude);
+    }
+
 }
 
 module.exports = User;

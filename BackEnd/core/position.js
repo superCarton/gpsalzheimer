@@ -46,16 +46,6 @@ class Position {
     set longitude (newLongitude) {
         this._longitude = newLongitude;
     }
-
-    /**
-     * This function updates the user position.
-     * @param {number} newLatitude - The new latitude.
-     * @param {number} newLongitude - The new longitude.
-     */
-    updatePosition (newLatitude, newLongitude) {
-        this.latitude  = newLatitude;
-        this.longitude = newLongitude;
-    }
 }
 
 module.exports = Position;
