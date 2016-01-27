@@ -5,9 +5,11 @@
 var io = require("../core/core.js").getIO();
 
 // Route for the smartphone socket.
-var tabletSocket = io.of('/gpsalzheimer/tablet');
+//var tabletSocket = io.of('/gpsalzheimer/tablet');
+var tabletSocket = io.of('/tablet');
 
 tabletSocket.on('connect', function (socket) {
+    console.log('tablette connecté');
 
     /////////////////////////////////            Base Socket Events                    /////////////////////////////////
 
@@ -30,33 +32,33 @@ tabletSocket.on('connect', function (socket) {
     /////////////////////////////////         Callbacks Base Socket Events             /////////////////////////////////
 
     function disconnect () {
-        console.log("Client disconnected for Root namespace");
+        console.log("Tablet disconnected for Root namespace");
     }
 
     function error (errorData) {
-        console.log("An error occurred during Client connection for Root namespace");
+        console.log("An error occurred during Tablet connection for Root namespace");
         console.error(errorData);
     }
 
     function reconnect (attemptNumber) {
-        console.log("Client Connection for Root namespace after " + attemptNumber + " attempts.");
+        console.log("Tablet Connection for Root namespace after " + attemptNumber + " attempts.");
     }
 
     function reconnectAttempt () {
-        console.log("Client reconnect attempt for Root namespace");
+        console.log("Tablet reconnect attempt for Root namespace");
     }
 
     function reconnecting (attemptNumber) {
-        console.log("Client Reconnection for Root namespace - Attempt number " + attemptNumber);
+        console.log("Tablet Reconnection for Root namespace - Attempt number " + attemptNumber);
     }
 
     function reconnectError (errorData) {
-        console.log("An error occurred during Client reconnection for Root namespace");
+        console.log("An error occurred during Tablet reconnection for Root namespace");
         console.error(errorData);
     }
 
     function reconnectFailed () {
-        console.log("Failed to reconnect Client for Root namespace. No new attempt will be done.")
+        console.log("Failed to reconnect Tablet for Root namespace. No new attempt will be done.")
     }
 
     /////////////////////////////////          Callback GPS Socket Events              /////////////////////////////////
@@ -67,10 +69,10 @@ tabletSocket.on('connect', function (socket) {
  * This function aimed to emit the users to the tablet.
  * @param {Array} array - The user array.
  */
-function updateGpsData (array) {
-    tabletSocket.emit('updateGpsData', {users: array});
+function updateUsers (array) {
+    tabletSocket.emit('updateUsers', {users: array});
 }
 
 module.exports = {
-    updateGpsData: updateGpsData
+    updateUsers: updateUsers
 };

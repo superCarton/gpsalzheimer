@@ -20,7 +20,8 @@ angular.module('starter')
        * process.
        */
       connect: function () {
-        socket = io.connect(constants.backendUrl, {"path":"/gpsalzheimer/socket.io"}, function(){
+        //socket = io.connect(constants.backendUrl, {"path":"/gpsalzheimer/socket.io"}, function(){
+        socket = io.connect(constants.backendUrl, function(){
           console.log("Connection success");
         });
 
