@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="300dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Vous êtes connectés"
         android:id="@+id/textView"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
@@ -21,13 +20,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Se déconnecter"
         android:id="@+id/btnDisconnect"
+        android:text="@string/disconnect"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/textView"
-        android:onClick="disconnectToTab" />
+        android:layout_below="@+id/textView" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"

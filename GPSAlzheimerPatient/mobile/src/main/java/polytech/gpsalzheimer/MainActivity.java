@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -52,9 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void connectToTab(View v){
+
         connectBtn.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
         socketGPS.connectToTab(getApplicationContext());
+
     }
 
     private void registerBroadcastReceivers() {
@@ -65,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                Intent i = new Intent(getApplicationContext(), ConnectedActivity.class);
+                // go to connected activity
+                Intent i = new Intent(MainActivity.this, ConnectedActivity.class);
                 startActivity(i);
             }
         };
