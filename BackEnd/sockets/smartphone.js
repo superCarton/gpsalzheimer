@@ -3,10 +3,10 @@
  */
 
 var io   = require("../core/core.js").getIO(),
-    User = require('../core/user.js');
+    handle = require('../handle/handle.js');
 
 // Route for the smartphone socket.
-var smartphoneSocket = io.of('/smartphone');
+var smartphoneSocket = io.of('/gpsalzheimer/smartphone');
 
 smartphoneSocket.on('connect', function (socket) {
     console.log('connected');
@@ -34,6 +34,8 @@ smartphoneSocket.on('connect', function (socket) {
     socket.on('disconnectable', disconnectable);
 
     socket.on('gpsData', gpsData);
+
+    socket.on('frequencyData', frequencyData);
 
     /////////////////////////////////         Callbacks Base Socket Events             /////////////////////////////////
 
@@ -76,7 +78,7 @@ smartphoneSocket.on('connect', function (socket) {
      */
     function connectable (params) {
         console.log('connecté');
-        var user = new User();
+        var user = handle.addUser();
         socket.emit('connectionAchieved', {id: user.id, color: user.color});
     }
 
@@ -90,6 +92,10 @@ smartphoneSocket.on('connect', function (socket) {
     }
 
     function gpsData (params) {
+        handle.gpsData(params.id, params.lat, params.long);
+    }
+
+    function frequencyData (params) {
 
     }
 
