@@ -7,40 +7,23 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-/*
-    var mapOptions = {
-      center: latLng,
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
 
-    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    */$scope.map;
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 18,
-        center: latLng//{lat: 43.615377, lng: 7.07184}
-      });
+    //$scope.map;
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 18,
+      center: latLng
+    });
 
     var image = 'img/b.png';
     var image2 = 'img/bleu.png';
     var image3 = 'img/ionic.png';
 
-    /*var image = {
-      url: 'img/b.png',
-      // This marker is 20 pixels wide by 32 pixels high.
-      size: new google.maps.Size(20, 32),
-      // The origin for this image is (0, 0).
-      origin: new google.maps.Point(0, 0),
-      // The anchor for this image is the base of the flagpole at (0, 32).
-      anchor: new google.maps.Point(0, 32)
-    };*/
-
-      var marker = new google.maps.Marker({
-        position: {lat: 43.615377, lng: 7.07185},
-        animation: google.maps.Animation.DROP,
-        map: map,
-        icon: image
-      });
+    var marker = new google.maps.Marker({
+      position: {lat: 43.615377, lng: 7.07185},
+      animation: google.maps.Animation.DROP,
+      map: map,
+      icon: image
+    });
     marker.addListener('click', toggleBounce);
 
 
@@ -79,7 +62,6 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
   }, function (error) {
     console.log("Could not get location");
   });
-
 
 
 });

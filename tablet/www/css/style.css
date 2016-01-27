@@ -20,6 +20,24 @@
   width:100%;
 }
 
+.divlabelFQ{
+  display:none;
+}
+.labelFQ{
+  display:none;
+}
+
+.ion-heart{
+  color:red;
+  width:100%;
+  font-size:35px;
+}
+
+.ion-heart::before{
+  width:100%;
+  height:100%;
+}
+
 @media screen and (min-width: 1051px ) {
   .button-positive{
     margin-left: 0%;
@@ -48,9 +66,6 @@
     font-size: 35px;
   }
 
-  .ion-heart{
-    display:none;
-  }
 }
 
 
@@ -92,23 +107,7 @@
     margin-top: 15px;
   }
 
-  .divlabelFQ{
-    display:none;
-  }
-  .labelFQ{
-    display:none;
-  }
 
-  .ion-heart{
-    color:red;
-    width:100%;
-    font-size:35px;
-  }
-
-  .ion-heart::before{
-    width:100%;
-    height:100%;
-  }
 
   .divheart{
     height: 50px;
