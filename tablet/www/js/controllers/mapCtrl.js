@@ -15,26 +15,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
   $scope.personList = [];
   $scope.markerList = new Array();
 
-  var socket;
-  socket = io.connect(constants.backendUrl, function () {
-    console.log("Connection success");
-  });
 
-  socket.io.on('connect_error', function (err) {
-    console.log('Error connecting to server');
-  });
-
-  socket.on("updateUsers", function (params) {
-    if (params !== {}) {
-      console.log("--------------start update users ---------------");
-      console.log("personne list 1: ", $scope.personList);
-      $scope.personList = new Array("check", "autre");
-      //$scope.personList = params.users;
-      console.log("personne list 2: ", $scope.personList);
-      console.log('scope person list:', $scope.personList);
-      //initMarkers(params);
-    }
-  });
 
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
@@ -57,6 +38,26 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
     //Wait until the map is loaded
     google.maps.event.addListenerOnce(map, 'idle', function () {
 
+      var socket;
+      socket = io.connect(constants.backendUrl, function () {
+        console.log("Connection success");
+      });
+
+      socket.io.on('connect_error', function (err) {
+        console.log('Error connecting to server');
+      });
+
+      socket.on("updateUsers", function (params) {
+        if (params !== {}) {
+          console.log("--------------start update users ---------------");
+          console.log("personne list 1: ", $scope.personList);
+          //$scope.$apply($scope.personList = new Array("check", "autre"));
+          $scope.$apply($scope.personList = params.users);
+          console.log("personne list 2: ", $scope.personList);
+          console.log('scope person list:', $scope.personList);
+          initMarkers(params);
+        }
+      });
 
       var mar = new google.maps.Marker({
         map: map,
