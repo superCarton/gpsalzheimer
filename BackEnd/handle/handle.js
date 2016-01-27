@@ -2,15 +2,15 @@
  * Created by guillaume on 27/01/2016.
  */
 
-var Goout  = require('../core/core.js'),
+var GoOut  = require('../core/goout.js'),
     User   = require('../core/user.js'),
     tablet = require('../sockets/tablet.js');
 
-var goout = new Goout();
+var goout = new GoOut();
 
 /**
  * This function get the variable goout.
- * @returns {Goout} The goout variable.
+ * @returns {GoOut} The goout variable.
  */
 var getGoout = function () {
     return goout;
@@ -35,14 +35,30 @@ var addUser = function () {
 var gpsData = function (id, lat, long) {
     if (getGoout().gpsData(id, lat, long)) {
         console.log('data updated');
-        tablet.updateGpsData(getGoout().users);
+        tablet.updateUsers(getGoout().users);
     }
     else {
         console.error('An error occured');
     }
 };
 
+/**
+ * This function updates the user's frequency.
+ * @param {int} id - The user's id.
+ * @param {int} freq - The user's frequency.
+ */
+var frequencyData = function (id, freq) {
+    if (getGoout().frequencyData(id, freq)) {
+        console.log('frequency updated');
+        tablet.updateUsers(getGoout().users)
+    }
+    else {
+        console.log('An error occured');
+    }
+};
+
 module.exports = {
-    addUser: addUser,
-    gpsData: gpsData
+    addUser      : addUser,
+    gpsData      : gpsData,
+    frequencyData: frequencyData
 };

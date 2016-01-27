@@ -33,16 +33,32 @@ class GoOut {
     }
 
     /**
-     * This function aimed to update the position of a user.
+     * This function aimed to update the user's position.
      * @param {int} id - The user's id.
      * @param {number} lat - The user's latitude.
      * @param {number} long - The user's longitude.
-     * @returns {boolean}
+     * @returns {boolean} True if the position has been updated, else false.
      */
     gpsData (id, lat, long) {
         for (var i = 0; i < this.users.length; i++) {
-            if (i.id === id) {
-                i.updatePosition(lat, long);
+            if (this.users[i].id === id) {
+                this.users[i].updatePosition(lat, long);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * This function aimed to update the user's frequency.
+     * @param {int} id - The user's id.
+     * @param {int} freq - The user's frequency.
+     * @returns {boolean} True if the frequency has been updated, else false.
+     */
+    frequencyData (id, freq) {
+        for (var i = 0; i < this.users.length; i++) {
+            if (this.users[i].id === id) {
+                this.users[i].frequency = freq;
                 return true;
             }
         }

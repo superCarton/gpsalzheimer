@@ -6,7 +6,8 @@ var io   = require("../core/core.js").getIO(),
     handle = require('../handle/handle.js');
 
 // Route for the smartphone socket.
-var smartphoneSocket = io.of('/gpsalzheimer/smartphone');
+//var smartphoneSocket = io.of('/gpsalzheimer/smartphone');
+var smartphoneSocket = io.of('/smartphone');
 
 smartphoneSocket.on('connect', function (socket) {
     console.log('connected');
@@ -40,33 +41,33 @@ smartphoneSocket.on('connect', function (socket) {
     /////////////////////////////////         Callbacks Base Socket Events             /////////////////////////////////
 
     function disconnect () {
-        console.log("Client disconnected for Root namespace");
+        console.log("Smartphone disconnected for Root namespace");
     }
 
     function error (errorData) {
-        console.log("An error occurred during Client connection for Root namespace");
+        console.log("An error occurred during Smartphone connection for Root namespace");
         console.error(errorData);
     }
 
     function reconnect (attemptNumber) {
-        console.log("Client Connection for Root namespace after " + attemptNumber + " attempts.");
+        console.log("Smartphone Connection for Root namespace after " + attemptNumber + " attempts.");
     }
 
     function reconnectAttempt () {
-        console.log("Client reconnect attempt for Root namespace");
+        console.log("Smartphone reconnect attempt for Root namespace");
     }
 
     function reconnecting (attemptNumber) {
-        console.log("Client Reconnection for Root namespace - Attempt number " + attemptNumber);
+        console.log("Smartphone Reconnection for Root namespace - Attempt number " + attemptNumber);
     }
 
     function reconnectError (errorData) {
-        console.log("An error occurred during Client reconnection for Root namespace");
+        console.log("An error occurred during Smartphone reconnection for Root namespace");
         console.error(errorData);
     }
 
     function reconnectFailed () {
-        console.log("Failed to reconnect Client for Root namespace. No new attempt will be done.")
+        console.log("Failed to reconnect Smartphone for Root namespace. No new attempt will be done.")
     }
 
     /////////////////////////////////          Callback GPS Socket Events              /////////////////////////////////
@@ -91,12 +92,20 @@ smartphoneSocket.on('connect', function (socket) {
         socket.emit('disconnectionAchieved', {});
     }
 
+    /**
+     * This function aimed to get the gps datas.
+     * @param params
+     */
     function gpsData (params) {
         handle.gpsData(params.id, params.lat, params.long);
     }
 
+    /**
+     * This function aimed to get the frequency data.
+     * @param params
+     */
     function frequencyData (params) {
-
+        handle.frequencyData(params.id, params.freq);
     }
 
 });
