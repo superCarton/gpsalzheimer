@@ -17,7 +17,8 @@ import java.net.URISyntaxException;
  */
 public class SocketGPS {
 
-    private final String SOCKET_ADDR = "http://sparks-vm19.i3s.unice.fr/gpsalzheimer/smartphone";
+    //private final String SOCKET_ADDR = "http://10.212.103.206:3000/smartphone";
+   private final String SOCKET_ADDR = "http://sparks-vm19.i3s.unice.fr/gpsalzheimer/smartphone";
 
     private com.github.nkzawa.socketio.client.Socket mSocket;
 
@@ -35,9 +36,14 @@ public class SocketGPS {
     private SocketGPS() {
 
         try {
-
             Log.i("socketio", "create socket");
-            mSocket = IO.socket(SOCKET_ADDR);
+
+            smartphoneid = -1;
+
+            IO.Options opts = new IO.Options();
+            opts.path = "/gpsalzheimer/socket.io";
+
+            mSocket = IO.socket(SOCKET_ADDR, opts);
         } catch (URISyntaxException e) {
             Log.i("socketio", "error create socket");
         }
@@ -97,9 +103,39 @@ public class SocketGPS {
         } else {
             Log.i("socketio", "error not connected");
         }
-
     }
 
+    public void sendGPSData(double latitude, double longitude){
+
+        if (mSocket.connected()) {
+
+            if (smartphoneid != -1){
+
+                Log.i("socketio", "gpsData emit");
+
+                mSocket.emit("gpsData", "{id:" + smartphoneid + ", lat:" + latitude + ", long:" + longitude + "}");
+
+            } else {
+                Log.i("socketio", "gpsData not emit smartphone not connected");
+            }
+
+        } else {
+            Log.i("socketio", "error not connected");
+        }
+    }
+
+    public void sendFreqData(double freq){
+
+        if (mSocket.connected()) {
+
+            Log.i("socketio", "frequencyData emit");
+
+            mSocket.emit("frequencyData", "{id:" + smartphoneid + ", freq:" + freq + "}");
+
+        } else {
+            Log.i("socketio", "error not connected");
+        }
+    }
 
     private Emitter.Listener connectAchieve = new Emitter.Listener() {
 
@@ -146,10 +182,33 @@ public class SocketGPS {
 
                     Log.i("socketio", "disconnectAchieve");
 
+                    smartphoneid = -1;
+
                     // start the connected activity
                     Intent i = new Intent(contextConnected, MainActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     contextConnected.startActivity(i);
+
+                }
+
+            }).start();
+        }
+    };
+
+    private Emitter.Listener addedOnTab = new Emitter.Listener() {
+
+        @Override
+        public void call(final Object... args) {
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    Log.i("socketio", "addedOnTab");
+
+                    // emit event that the tab is also connected
+                    Intent i = new Intent(Events.ADDED_ON_TAB);
+                    contextMain.sendBroadcast(i);
 
                 }
 
