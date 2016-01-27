@@ -9743,3 +9743,6 @@ a.button {
   width: 20%;
   height: 100%;
   background-color: dodgerblue; }
+
+#marker {
+  max-height: 10px; }
