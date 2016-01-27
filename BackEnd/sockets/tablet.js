@@ -40,7 +40,7 @@ function reconnectAttempt () {
     console.log("Client reconnect attempt for Root namespace : " + socket.id);
 }
 
-function reconnecting(attemptNumber) {
+function reconnecting (attemptNumber) {
     console.log("Client Reconnection for Root namespace : " + socket.id + " - Attempt number " + attemptNumber);
 }
 

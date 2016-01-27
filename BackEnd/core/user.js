@@ -6,7 +6,7 @@
 
 var idGenerator      = require('./id.js')(),
     colorIdGenerator = require('./color.js')(),
-    Position = require('./position.js');
+    Position         = require('./position.js');
 
 /**
  * This class represent a user. The one that has the watch and the smartphone.
@@ -17,9 +17,9 @@ class User {
      * The default constructor of a User.
      */
     constructor () {
-        this._id    = idGenerator.next().value;
-        this._color = colorIdGenerator.next().value % 7;
-        this._position = new Position();
+        this._id        = idGenerator.next().value;
+        this._color     = colorIdGenerator.next().value % 7;
+        this._position  = new Position();
         this._frequency = 0;
     }
 
@@ -51,7 +51,7 @@ class User {
      * Setter of the position.
      * @param {Position} newPos - The new user's position.
      */
-    set position (newPos){
+    set position (newPos) {
         this._position = newPos;
     }
 
@@ -67,7 +67,7 @@ class User {
      * Setter of the frequency.
      * @param {int} newFrequency - The new user's frequency.
      */
-    set frequency (newFrequency){
+    set frequency (newFrequency) {
         this._frequency = newFrequency
     }
 
