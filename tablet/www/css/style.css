@@ -15,17 +15,17 @@
   font-color:white;
 }
 
-@media screen and (min-width: 769px ) {
+@media screen and (min-width: 1051px ) {
   .button-positive{
     height:200%;
-    margin-left: 10%;
+    margin-left: 0%;
   }
 
   .localisationimg{
-    height: 216%;
-    margin-top: 84%;
+    /*height: 20%;*/
+    margin-top: 20%;
     margin-left: 5%;
-    width: 174%;
+    width: 60%;
   }
 
   .bar-header > h1{
