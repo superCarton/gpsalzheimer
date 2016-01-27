@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordovaGeolocation) {
+angular.module('starter').controller('MapCtrl',  function ($scope, $state, $cordovaGeolocation, socket) {
   var options = {timeout: 10000, enableHighAccuracy: true};
 
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
@@ -17,6 +17,8 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
     var image = 'img/b.png';
     var image2 = 'img/bleu.png';
     var image3 = 'img/ionic.png';
+
+    socket.connect();
 
     var marker = new google.maps.Marker({
       position: {lat: 43.615377, lng: 7.07185},

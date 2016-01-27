@@ -16,7 +16,7 @@
  * # constants
  * Constant in the frontEndOpenEatApp.
  */
-angular.module('frontEndApp')
+angular.module('starter')
   .constant('constants', {
     backendUrl : 'http://sparks-vm19.i3s.unice.fr/gpsalzheimer/tablet', // L'adresse du serveur.
   });
