@@ -89,7 +89,9 @@ smartphoneSocket.on('connect', function (socket) {
      * @param params
      */
     function disconnectable (params) {
-        socket.emit('disconnectionAchieved', {});
+        handle.removeUser(params.id, function () {
+            socket.emit('disconnectionAchieved', {});
+        });
     }
 
     /**

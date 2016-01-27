@@ -4,6 +4,9 @@
  * Created by guillaume on 18/01/2016.
  */
 
+var Position = require('./position.js'),
+    User = require('./user.js');
+
 /**
  * This class contains all we need when people go out.
  */
@@ -33,6 +36,20 @@ class GoOut {
     }
 
     /**
+     * This function aimed to remove an user.
+     * @param {int} id - The user's id.
+     * @param {function} callback - The callback function to be triggered when the user has been removed.
+     */
+    removeUser (id, callback) {
+        for (var i = 0; i < this.users.length; i++) {
+            if (this.users[i].id === id) {
+                this.users.splice(i, 1);
+                callback();
+            }
+        }
+    }
+
+    /**
      * This function aimed to update the user's position.
      * @param {int} id - The user's id.
      * @param {number} lat - The user's latitude.
@@ -42,7 +59,7 @@ class GoOut {
     gpsData (id, lat, long) {
         for (var i = 0; i < this.users.length; i++) {
             if (this.users[i].id === id) {
-                this.users[i].updatePosition(lat, long);
+                this.users[i].position = new Position(lat, long);
                 return true;
             }
         }

@@ -27,6 +27,15 @@ var addUser = function () {
 };
 
 /**
+ * This function removes a user.
+ * @param {int} id - The user's id.
+ * @param {function} callback - The callback function to be triggered when the user has been removed.
+ */
+var removeUser = function (id, callback) {
+    getGoout().removeUser(id, callback);
+};
+
+/**
  * This function updates the gps data of a user.
  * @param {int} id - The user's id.
  * @param {number} lat - The user's latitude.
@@ -34,7 +43,6 @@ var addUser = function () {
  */
 var gpsData = function (id, lat, long) {
     if (getGoout().gpsData(id, lat, long)) {
-        console.log('data updated');
         tablet.updateUsers(getGoout().users);
     }
     else {
@@ -60,5 +68,6 @@ var frequencyData = function (id, freq) {
 module.exports = {
     addUser      : addUser,
     gpsData      : gpsData,
-    frequencyData: frequencyData
+    frequencyData: frequencyData,
+    removeUser   : removeUser
 };
