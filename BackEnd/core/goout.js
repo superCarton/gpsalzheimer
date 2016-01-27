@@ -9,15 +9,15 @@
  */
 class GoOut {
 
-    constructor (){
+    constructor () {
         this._users = [];
     }
 
-    get users (){
+    get users () {
         return this._users;
     }
 
-    addUser (user){
+    addUser (user) {
         this.users.push(user);
     }
 
