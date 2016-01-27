@@ -19,7 +19,7 @@ class User {
     constructor () {
         this._id        = idGenerator.next().value;
         this._color     = colorIdGenerator.next().value % 7;
-        this._position  = new Position();
+        this._position  = new Position(0,0);
         this._frequency = 0;
     }
 
@@ -68,16 +68,7 @@ class User {
      * @param {int} newFrequency - The new user's frequency.
      */
     set frequency (newFrequency) {
-        this._frequency = newFrequency
-    }
-
-    /**
-     * This function updates the user position.
-     * @param {number} newLatitude - The new latitude.
-     * @param {number} newLongitude - The new longitude.
-     */
-    updatePosition (newLatitude, newLongitude) {
-        this.position = new Position(newLatitude, newLongitude);
+        this._frequency = newFrequency;
     }
 
 }
