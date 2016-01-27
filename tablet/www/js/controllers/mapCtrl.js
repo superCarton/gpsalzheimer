@@ -23,13 +23,13 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
       center: latLng
     });
 
-    var image = 'img/localisation.png';
+    var image1 = 'img/localisation1.png';
     var image2 = 'img/localisation2.png';
     var image3 = 'img/localisation3.png';
-    var imageList = [image, image2, image3];
+    var imageList = [image1, image2, image3];
 
-    $scope.personList;
-    $scope.markerList;
+    $scope.personList=new Array();
+    $scope.markerList=new Array();
 
     var socket;
     socket = io.connect(constants.backendUrl, function () {
@@ -91,12 +91,13 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
      * Function cleanMarkers. This function is used to clean our marker (make them disapear on the map). To ensure this action,
      * the parameter map has to be null.
      * @param map
-     */
+
     $scope.cleanMarkers = function (map) {
       for (var i = 0; i < $scope.markerList.length; i++) {
         $scope.markerList[i].setMap(map);
       }
-    }
+    }*/
+
 
 
     /* $scope.connect=function(){
@@ -185,14 +186,24 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
       }
     }
 
+    function cleanMarkers(map) {
+      for (var i = 0; i < $scope.markerList.length; i++) {
+        $scope.markerList[i].setMap(map);
+      }
+    }
+
     function initMarkers(userList) {
       console.log('in initmarker');
       console.log("user list", userList);
       var allMarker = new Array();
-      //$scope.cleanMarkers(null);
-      console.log("user list 0", userList.users[0]);
 
+      if($scope.markerList.length>0){
+        cleanMarkers(null);
+      }
+      console.log("user list 0", userList.users[0]);
+      $scope.markerList=new Array();
       for (var i = 0; i < userList.users.length; i++) {
+
         console.log("--------------------- I ",i,"------------------------");
         console.log("latitude", userList.users[i]._position._latitude);
         console.log("longitude", userList.users[i]._position._longitude);
