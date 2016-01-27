@@ -1,3 +1,15 @@
 <resources>
+
     <string name="app_name">GPS Alzheimer</string>
+
+    <string name="disconnect_confirm_title">Etes vous sûrs de déconnecter ce smartphone ?</string>
+    <string name="disconnect_confirm_message"></string>
+    <string name="disconnect_confirm_yes">Oui</string>
+    <string name="disconnect_confirm_no">Annuler</string>
+
+    <string name="connected">Vous êtes connectés</string>
+    <string name="smartphone_connected">Smartphone connecté</string>
+    <string name="smartphone_waiting_tab">Smartphone en attente de la tablette</string>
+    <string name="disconnect">Déconnecter le smartphone</string>
+
 </resources>
