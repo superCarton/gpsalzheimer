@@ -4,24 +4,36 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="polytech.gpsalzheimer.ConnectedActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Vous êtes connectés"
+        android:id="@+id/textView"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical|center_horizontal" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Connecter à la tablette"
-        android:id="@+id/btnConnect"
+        android:text="Se déconnecter"
+        android:id="@+id/btnDisconnect"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:onClick="connectToTab" />
+        android:layout_below="@+id/textView"
+        android:onClick="disconnectToTab" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBar2"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:visibility="invisible" />

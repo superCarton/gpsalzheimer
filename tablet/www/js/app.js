@@ -10,7 +10,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
     $stateProvider
       .state('map', {
         url: '/',
-        templateUrl: 'templates/map.html',
+        templateUrl: 'templates/home.html',
         controller: 'MapCtrl'
       });
 
