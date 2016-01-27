@@ -32,8 +32,15 @@ angular.module('starter').controller('MapCtrl',  function ($scope, $state, $cord
     $scope.personList;
     $scope.markerList;
 
+
+    /**
+     * We start the connection
+     */
     socket.connect();
 
+    /**
+     * We get back the person list from the server.
+     */
     socket.getPerson().then(
       function(data){
         console.log("data person list: ",data);
@@ -43,22 +50,36 @@ angular.module('starter').controller('MapCtrl',  function ($scope, $state, $cord
       function (msg){
         console.log("error getbackscore homepage",msg);
       }
-
     );
 
-
-
+    /**
+     * Function initMarkers. This function initializes the marker on the map (used to see user localisation) according to the
+     * list of people we have.
+     */
     $scope.initMarkers= function(){
-      var allmarker= new Array();
+      var allMarker= new Array();
+      $scope.cleanMarkers(null);
       for(var i=0; i<$scope.personList.length;i++){
         var marker = new google.maps.Marker({
           position: {lat: $scope.personList[i]._position._latitude, lng: $scope.personList[i]._position._longitude},
           map: map,
           icon: imageList[i]
         });
-        allmarker.push(marker);
+        allMarker.push(marker);
       }
-      $scope.markerList=allmarker;
+      $scope.markerList=allMarker;
+    }
+
+
+    /**
+     * Function cleanMarkers. This function is used to clean our marker (make them disapear on the map). To ensure this action,
+     * the parameter map has to be null.
+     * @param map
+     */
+    $scope.cleanMarkers=function(map){
+      for(var i=0; i<$scope.markerList.length;i++){
+        $scope.markerList[i].setMap(map);
+      }
     }
 
     /*
