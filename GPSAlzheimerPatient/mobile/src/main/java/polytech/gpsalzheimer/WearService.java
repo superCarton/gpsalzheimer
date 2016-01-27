@@ -10,6 +10,7 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -55,9 +56,17 @@ public class WearService extends WearableListenerService {
         //traite le message reçu
         final String path = messageEvent.getPath();
 
+        /*
         if(path.equals("bonjour")) {
             int random = (int)(Math.random() * 100);
             sendMessage("bonjour", "affiche :" + random);
+        }*/
+
+        if (path.equals("frequency")){
+            String str = new String(messageEvent.getData(), StandardCharsets.UTF_8);
+
+            int freq = Integer.parseInt(str);
+            SocketGPS.getInstance().sendFreqData(freq);
         }
     }
 
