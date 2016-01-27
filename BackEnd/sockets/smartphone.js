@@ -33,6 +33,8 @@ smartphoneSocket.on('connect', function (socket) {
 
     socket.on('disconnectable', disconnectable);
 
+    socket.on('gpsData', gpsData);
+
     /////////////////////////////////         Callbacks Base Socket Events             /////////////////////////////////
 
     function disconnect () {
@@ -67,14 +69,28 @@ smartphoneSocket.on('connect', function (socket) {
 
     /////////////////////////////////          Callback GPS Socket Events              /////////////////////////////////
 
+    /**
+     * This function aimed to connect a user.
+     * It triggers the 'connectionAchieved' event.
+     * @param params
+     */
     function connectable (params) {
         console.log('connecté');
         var user = new User();
         socket.emit('connectionAchieved', {id: user.id, color: user.color});
     }
 
+    /**
+     * This function aimed to disconnect a user.
+     * It triggers the 'disconnectionAchieved' event.
+     * @param params
+     */
     function disconnectable (params) {
         socket.emit('disconnectionAchieved', {});
+    }
+
+    function gpsData (params) {
+
     }
 
 });

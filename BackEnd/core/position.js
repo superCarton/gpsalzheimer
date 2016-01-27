@@ -10,8 +10,8 @@ class Position {
     /**
      * This is the default constructor.
      */
-    constructor (){
-        this._latitude = 0.0;
+    constructor () {
+        this._latitude  = 0.0;
         this._longitude = 0.0;
     }
 
@@ -19,7 +19,7 @@ class Position {
      * Getter of the latitude double.
      * @returns {number} The latitude.
      */
-    get latitude (){
+    get latitude () {
         return this._latitude;
     }
 
@@ -27,7 +27,7 @@ class Position {
      * Setter of the latitude.
      * @param {number} newLatitude - The new latitude.
      */
-    set latitude (newLatitude){
+    set latitude (newLatitude) {
         this._latitude = newLatitude;
     }
 
@@ -43,7 +43,7 @@ class Position {
      * Setter of the longitude.
      * @param {number} newLongitude - The new longitude.
      */
-    set longitude (newLongitude){
+    set longitude (newLongitude) {
         this._longitude = newLongitude;
     }
 
@@ -53,7 +53,7 @@ class Position {
      * @param {number} newLongitude - The new longitude.
      */
     updatePosition (newLatitude, newLongitude) {
-        this.latitude = newLatitude;
+        this.latitude  = newLatitude;
         this.longitude = newLongitude;
     }
 }
