@@ -2,7 +2,7 @@
  * Created by guillaume on 18/01/2016.
  */
 
-var io   = require("../core/core.js").getIO(),
+var io     = require("../core/core.js").getIO(),
     handle = require('../handle/handle.js');
 
 // Route for the smartphone socket.
@@ -89,6 +89,7 @@ smartphoneSocket.on('connect', function (socket) {
      * @param params
      */
     function disconnectable (params) {
+        console.log('deconnecté');
         handle.removeUser(params.id, function () {
             socket.emit('disconnectionAchieved', {});
         });

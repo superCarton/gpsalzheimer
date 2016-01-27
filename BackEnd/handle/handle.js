@@ -32,7 +32,9 @@ var addUser = function () {
  * @param {function} callback - The callback function to be triggered when the user has been removed.
  */
 var removeUser = function (id, callback) {
-    getGoout().removeUser(id, callback);
+    getGoout().removeUser(id, callback, function () {
+        tablet.updateUsers(getGoout().users);
+    });
 };
 
 /**
@@ -43,7 +45,9 @@ var removeUser = function (id, callback) {
  */
 var gpsData = function (id, lat, long) {
     if (getGoout().gpsData(id, lat, long)) {
+        console.log(lat + ' , ' + long);
         tablet.updateUsers(getGoout().users);
+        console.log(getGoout().users);
     }
     else {
         console.error('An error occured');

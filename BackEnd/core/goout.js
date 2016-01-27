@@ -5,7 +5,7 @@
  */
 
 var Position = require('./position.js'),
-    User = require('./user.js');
+    User     = require('./user.js');
 
 /**
  * This class contains all we need when people go out.
@@ -39,13 +39,17 @@ class GoOut {
      * This function aimed to remove an user.
      * @param {int} id - The user's id.
      * @param {function} callback - The callback function to be triggered when the user has been removed.
+     * @param {function} callback2 - The callback function to be triggered when there are no users anymore.
      */
-    removeUser (id, callback) {
+    removeUser (id, callback, callback2) {
         for (var i = 0; i < this.users.length; i++) {
             if (this.users[i].id === id) {
                 this.users.splice(i, 1);
                 callback();
             }
+        }
+        if (this.users.length === 0) {
+            callback2();
         }
     }
 
