@@ -1,4 +1,4 @@
-<ion-content id="menu">
+<ion-content id="menu" ng-controller="MenuCtrl as Menu">
   <div class="bar bar-header">
     <h1 class="title">Menu</h1>
   </div>
@@ -6,8 +6,10 @@
   <br/>
   <br/>
   <br/>
+  {{Menu.personList}}
   <ion-list>
-    <ion-item class="item">
+    <ion-item class="item" ng-repeat="person in Menu.personList">
+
       <div class="globalItem row">
         <div class="imagecontainer col ">
           <ion-thumbnail item-left>
@@ -20,13 +22,13 @@
             <div class="row">
               <div class="ion-heart col col-50"></div>
               <div class="row divlabelFQ"><span class="labelFQ">Fréquence cardiaque</span></div>
-              <div class="rox"><span class="fcvalue col col-50">124</span></div>
+              <div class="rox"><span class="fcvalue col col-50">{{person._frequency}}</span></div>
             </div>
           </button>
         </div>
       </div>
     </ion-item>
-
+<!--
     <ion-item class="item">
       <div class="globalItem row">
         <div class="imagecontainer col ">
@@ -64,7 +66,7 @@
           </button>
         </div>
       </div>
-    </ion-item>
+    </ion-item>-->
 
   </ion-list>
 

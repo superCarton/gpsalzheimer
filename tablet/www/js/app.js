@@ -12,7 +12,10 @@ angular.module('starter', ['ionic', 'ngCordova'])
         url: '/',
         templateUrl: 'templates/home.html',
         controller: 'MapCtrl'
-      });
+      })
+
+
+    ;
 
     $urlRouterProvider.otherwise("/");
 

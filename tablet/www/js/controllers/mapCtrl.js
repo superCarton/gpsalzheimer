@@ -11,6 +11,31 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
     showDelay: 0
   });
 
+
+  $scope.personList = [];
+  $scope.markerList = new Array();
+
+  var socket;
+  socket = io.connect(constants.backendUrl, function () {
+    console.log("Connection success");
+  });
+
+  socket.io.on('connect_error', function (err) {
+    console.log('Error connecting to server');
+  });
+
+  socket.on("updateUsers", function (params) {
+    if (params !== {}) {
+      console.log("--------------start update users ---------------");
+      console.log("personne list 1: ", $scope.personList);
+      $scope.personList = new Array("check", "autre");
+      //$scope.personList = params.users;
+      console.log("personne list 2: ", $scope.personList);
+      console.log('scope person list:', $scope.personList);
+      //initMarkers(params);
+    }
+  });
+
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
     $ionicLoading.hide();
@@ -23,133 +48,11 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
       center: latLng
     });
 
-    var image1 = 'img/localisation1.png';
-    var image2 = 'img/localisation2.png';
-    var image3 = 'img/localisation3.png';
+    var image1 = 'img/markerblue.png';
+    var image2 = 'img/markerbrown.png';
+    var image3 = 'img/markeryellow.png';
     var imageList = [image1, image2, image3];
 
-    $scope.personList=new Array();
-    $scope.markerList=new Array();
-
-    var socket;
-    socket = io.connect(constants.backendUrl, function () {
-      console.log("Connection success");
-    });
-
-    socket.io.on('connect_error', function (err) {
-      console.log('Error connecting to server');
-    });
-
-    socket.on("updateUsers", function (params) {
-      if (params !== {}) {
-        console.log('listenPerson: ', params);
-        $scope.personList = params;
-        console.log('scope person list:', $scope.personList);
-        initMarkers(params);
-      }
-    });
-    /**
-     * We start the connection
-     *
-     socket=connect(socket);
-
-     listenPerson(socket);
-     /**
-     * We get back the person list from the server.
-
-     socket.getPerson().then(
-     function(data){
-        console.log("data person list: ",data);
-        $scope.personList=data;
-        initMarkers();
-      },
-     function (msg){
-        console.log("error getbackscore homepage",msg);
-      }
-     );*/
-
-    /**
-     * Function initMarkers. This function initializes the marker on the map (used to see user localisation) according to the
-     * list of people we have.
-     *
-     $scope.initMarkers= function(){
-      var allMarker= new Array();
-      $scope.cleanMarkers(null);
-      for(var i=0; i<$scope.personList.length;i++){
-        var marker = new google.maps.Marker({
-          position: {lat: $scope.personList[i]._position._latitude, lng: $scope.personList[i]._position._longitude},
-          map: map,
-          icon: imageList[i]
-        });
-        allMarker.push(marker);
-      }
-      $scope.markerList=allMarker;
-    }
-
-
-     /**
-     * Function cleanMarkers. This function is used to clean our marker (make them disapear on the map). To ensure this action,
-     * the parameter map has to be null.
-     * @param map
-
-    $scope.cleanMarkers = function (map) {
-      for (var i = 0; i < $scope.markerList.length; i++) {
-        $scope.markerList[i].setMap(map);
-      }
-    }*/
-
-
-
-    /* $scope.connect=function(){
-     //socket = io.connect(constants.backendUrl, {"path":"/gpsalzheimer/socket.io"}, function(){
-     socket = io.connect(constants.backendUrl, function(){
-     console.log("Connection success");
-     });
-
-     socket.io.on('connect_error', function (err) {
-     console.log('Error connecting to server');
-     });
-     }
-
-     $scope.listenPerson=function(){
-     socket.on("updateGpsData", function(params){
-     if(params !=={}){
-     console.log('listenPerson',params);
-     $scope.personList=params;
-     }
-     });
-     }
-
-     */
-
-    /*
-
-     var marker = new google.maps.Marker({
-     position: {lat: 43.615377, lng: 7.07185},
-     animation: google.maps.Animation.DROP,
-     map: map,
-     icon: image
-     });
-     //marker.addListener('click', toggleBounce);
-
-
-     var marker2 = new google.maps.Marker({
-     position: {lat: 43.6154, lng: 7.07189},
-     animation: google.maps.Animation.DROP,
-     map: map,
-     icon: image
-     });
-     // marker2.addListener('click', toggleBounce);
-
-     var marker3 = new google.maps.Marker({
-     position: {lat: 43.6155, lng: 7.0719},
-     animation: google.maps.Animation.DROP,
-     map: map,
-     icon: image
-     });
-     // marker3.addListener('click', toggleBounce);
-
-     */
 
     //Wait until the map is loaded
     google.maps.event.addListenerOnce(map, 'idle', function () {
@@ -186,25 +89,34 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
       }
     }
 
+    /**
+     * Function cleanMarkers. This function is used to clean our marker (make them disapear on the map). To ensure this action,
+     * the parameter map has to be null.
+     * @param map
+     * */
     function cleanMarkers(map) {
       for (var i = 0; i < $scope.markerList.length; i++) {
         $scope.markerList[i].setMap(map);
       }
     }
 
+    /**
+     * Function initMarkers. This function initializes the marker on the map (used to see user localisation) according to the
+     * list of people we have.
+     **/
     function initMarkers(userList) {
       console.log('in initmarker');
       console.log("user list", userList);
       var allMarker = new Array();
 
-      if($scope.markerList.length>0){
+      if ($scope.markerList.length > 0) {
         cleanMarkers(null);
       }
       console.log("user list 0", userList.users[0]);
-      $scope.markerList=new Array();
+      $scope.markerList = new Array();
       for (var i = 0; i < userList.users.length; i++) {
 
-        console.log("--------------------- I ",i,"------------------------");
+        console.log("--------------------- I ", i, "------------------------");
         console.log("latitude", userList.users[i]._position._latitude);
         console.log("longitude", userList.users[i]._position._longitude);
         console.log("----------------------------------------------------");
