@@ -47,6 +47,10 @@
   span{
     font-size: 35px;
   }
+
+  .ion-heart{
+    display:none;
+  }
 }
 
 
@@ -63,6 +67,7 @@
 
   .buttoncontainer{
     padding:0px;
+    margin-top:5%;
   }
 
   .ion-item{
@@ -78,17 +83,35 @@
   }*/
 
   span{
-    font-size: 15px;
+    font-size: 25px;
   }
 
   .localisationimg {
     height: 50px;
     width: 30px;
-    margin-top: 20px;
+    margin-top: 15px;
+  }
+
+  .divlabelFQ{
+    display:none;
   }
   .labelFQ{
-    font-size:12px;
-    height:20px;
+    display:none;
+  }
+
+  .ion-heart{
+    color:red;
+    width:100%;
+    font-size:35px;
+  }
+
+  .ion-heart::before{
+    width:100%;
+    height:100%;
+  }
+
+  .divheart{
+    height: 50px;
   }
 
   .imagecontainer{
