@@ -179,13 +179,9 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
          * @type {zeze}
          */
 
-        //var alertZone = hasHadZoneAlert(userList.users[i]._id);
-        //var alertHF= hasHadFrequencyAlert(userList.users[i]._id);
-
         var alertZone = false;
         if ($scope.outOfZoneAlert.indexOf(userList.users[i]._id) >= 0) alertZone = true;
 
-        console.log("alertzone: ", alertZone);
         var alertHF = false;
         if ($scope.heartFrequencyAlert.indexOf(userList.users[i]._id) >= 0) alertHF = true;
 
@@ -309,17 +305,6 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
           return "marron";
         default:
           console.log("Error in the color translation");
-      }
-
-      function hasHadZoneAlert(id) {
-        console.log("je rentre has had zone alert");
-        if ($scope.outOfZoneAlert.contains(id)) return true;
-        return false;
-      }
-
-      function hasHadFrequencyAlert(id) {
-        if ($scope.heartFrequencyAlert.contains(id)) return true;
-        return false;
       }
 
     }
