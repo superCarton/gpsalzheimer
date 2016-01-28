@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('starter').controller('MapCtrl', function ($scope, constants, $ionicLoading, $cordovaGeolocation) {
+angular.module('starter').controller('MapCtrl', function ($scope, constants, $ionicLoading, $cordovaGeolocation, $ionicPopup) {
   var options = {timeout: 10000, enableHighAccuracy: true};
   // Setup the loader
   $ionicLoading.show({
@@ -20,42 +20,26 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
     $ionicLoading.hide();
 
     var socket;
-    socket = io.connect(constants.backendUrl, function () {
-      console.log("Connection success");
-    });
+    socket = io.connect(constants.backendUrl, {"path": "/gpsalzheimer/socket.io"});
 
     socket.io.on('connect_error', function (err) {
       console.log('Error connecting to server');
     });
 
     socket.on("updateUsers", function (params) {
-      console.log(params.users);
+      //console.log(params.users);
       if (params !== {}) {
-        //console.log("--------------start update users ---------------");
-        //console.log("personne list 1: ", $scope.personList);
-        //$scope.personList = new Array("check", "autre");
-        $scope.$apply(function() { $scope.personList = params.users; });
-        //$scope.personList = params.users;
-        //console.log("personne list 2: ", $scope.personList);
-        //console.log('scope person list:', $scope.personList);
+        $scope.$apply(function () {
+          $scope.personList = params.users;
+        });
         initMarkers(params);
       }
     });
 
-    socket.on("updateUsers", function (params) {
-      if (params !== {}) {
-        console.log("--------------start update users ---------------");
-        console.log("personne list 1: ", $scope.personList);
-        // $scope.personList = new Array("check", "autre");
-        $scope.personList = params.users;
-        $scope.params = params;
-        console.log("personne list 2: ", $scope.personList);
-        console.log('scope person list:', $scope.personList);
-        initMarkers(params);
-      }
-    });
+    var x1 = position.coords.latitude;
+    var y1 = position.coords.longitude;
 
-    var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    var latLng = new google.maps.LatLng(x1, y1);
 
     //$scope.map;
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -68,6 +52,14 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
     var image3 = 'img/markeryellow.png';
     var imageList = [image1, image2, image3];
 
+    var optionsCercle = {
+      map: map,
+      center: map.getCenter(),
+      fillOpacity: 0,
+      radius:70
+    };
+
+    var monCercle = new google.maps.Circle(optionsCercle);
 
     //Wait until the map is loaded
     google.maps.event.addListenerOnce(map, 'idle', function () {
@@ -104,6 +96,10 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
       }
     }
 
+    function Distance(x1, y1, x2, y2) {
+      return Math.sqrt(Math.pow((y2 - y1), 2) + Math.pow((x2 - x1), 2));
+    }
+
     /**
      * Function cleanMarkers. This function is used to clean our marker (make them disapear on the map). To ensure this action,
      * the parameter map has to be null.
@@ -114,6 +110,8 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
         $scope.markerList[i].setMap(map);
       }
     }
+
+    var alert = true;
 
     /**
      * Function initMarkers. This function initializes the marker on the map (used to see user localisation) according to the
@@ -127,23 +125,51 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
       if ($scope.markerList.length > 0) {
         cleanMarkers(null);
       }
-      console.log("user list 0", userList.users[0]);
+      // console.log("user list 0", userList.users[0]);
       $scope.markerList = new Array();
       for (var i = 0; i < userList.users.length; i++) {
 
-        console.log("--------------------- I ", i, "------------------------");
-        console.log("latitude", userList.users[i]._position._latitude);
-        console.log("longitude", userList.users[i]._position._longitude);
-        console.log("----------------------------------------------------");
+        //console.log("--------------------- I ", i, "------------------------");
+        // console.log("latitude", userList.users[i]._position._latitude);
+        // console.log("longitude", userList.users[i]._position._longitude);
+        // console.log("----------------------------------------------------");
+        var x2 = userList.users[i]._position._latitude;
+        var y2 = userList.users[i]._position._longitude;
         var marker = new google.maps.Marker({
-          position: {lat: userList.users[i]._position._latitude, lng: userList.users[i]._position._longitude},
+          position: {lat: x2, lng: y2},
           map: map,
           icon: imageList[i]
         });
         allMarker.push(marker);
+        // 100000 pour le transformer en mettre
+        var dist = 100000 * Distance(x1, y1, x2, y2);
+        console.log("x1 = ", x1);
+        console.log("y1 = ", y1);
+        console.log("x2 = ", x2);
+        console.log("y2  =", y2);
+        console.log("Distance = ", dist);
+        if (dist >= 70 && alert) {
+
+          alert = false;
+
+          var confirmPopup = $ionicPopup.confirm({
+            title: 'ALERT DANER',
+            template: 'SORTIE ZONE'
+          });
+
+          confirmPopup.then(function (res) {
+            if (res) {
+              console.log('You are sure');
+              alert = true;
+            } else {
+              console.log('You are not sure');
+            }
+          });
+        }
       }
       $scope.markerList = allMarker;
     }
+
 
     function connect(socket) {
       //socket = io.connect(constants.backendUrl, {"path":"/gpsalzheimer/socket.io"}, function(){
@@ -156,15 +182,15 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
       });
     }
 
-   /* function listenPerson(socket) {
-      socket.on("updateGpsData", function (params) {
-        if (params !== {}) {
-          console.log('listenPerson', params);
-          $scope.personList = params;
-        }
-      });
-    }
-*/
+    /* function listenPerson(socket) {
+     socket.on("updateGpsData", function (params) {
+     if (params !== {}) {
+     console.log('listenPerson', params);
+     $scope.personList = params;
+     }
+     });
+     }
+     */
 
   }, function (error) {
     console.log("Could not get location");
