@@ -31,7 +31,6 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
     });
 
     socket.on("updateUsers", function (params) {
-      //console.log(params.users);
       if (params !== {}) {
         $scope.$apply(function () {
           $scope.personList = params.users;
@@ -100,7 +99,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
           initMarkers(params);
         }
       });
-      
+
       /**
        * Initialisation of the marker of our current position
        * @type {google.maps.Marker}
@@ -162,10 +161,14 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
       for (var i = 0; i < userList.users.length; i++) {
         var x2 = userList.users[i]._position._latitude;
         var y2 = userList.users[i]._position._longitude;
+        var colorName= getBackColorFromID(userList.users[i]._color);
+        var pathImage='img/'+colorName+'.png';
+        $scope.$apply( $scope.personList[i].pathImage=pathImage);
+        console.log('in for2: personList with path: ', $scope.personList[i]);
         var marker = new google.maps.Marker({
           position: {lat: x2, lng: y2},
           map: map,
-          icon: imageList[i]
+          icon: pathImage
         });
         allMarker.push(marker);
 
@@ -194,6 +197,32 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
       $scope.markerList = allMarker;
     }
 
+    /**
+     * Function getBackColorFromID. This function returns the color string from its id (integer).
+     * @param id
+     * @returns {*}
+     */
+    function getBackColorFromID(id){
+      console.log("id: ",id);
+      switch(id){
+        case 0:
+              return "yellow";
+        case 1:
+              return "lightblue";
+        case 2:
+              return "blue";
+        case 3:
+              return "green";
+        case 4:
+              return "purple";
+        case 5:
+              return "pink";
+        case 6:
+              return "brown";
+        default:
+              console.log("Error of the color id");
+      }
+    }
   }, function (error) {
     console.log("Could not get location");
   });
