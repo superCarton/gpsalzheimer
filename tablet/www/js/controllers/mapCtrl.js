@@ -14,6 +14,8 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
 
   $scope.personList = new Array();
   $scope.markerList = new Array();
+  $scope.outOfZoneAlert = new Array();
+  $scope.heartFrequencyAlert = new Array();
 
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
@@ -73,7 +75,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
       map: map,
       center: map.getCenter(),
       fillOpacity: 0,
-      radius:constants.radius
+      radius: constants.radius
     };
 
     var monCercle = new google.maps.Circle(optionsCercle);
@@ -163,9 +165,30 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
       for (var i = 0; i < userList.users.length; i++) {
         var x2 = userList.users[i]._position._latitude;
         var y2 = userList.users[i]._position._longitude;
-        var colorName= getBackColorFromID(userList.users[i]._color);
-        var pathImage='img/'+colorName+'.png';
-        $scope.$apply( $scope.personList[i].pathImage=pathImage);
+
+        /**
+         * Color treatment
+         * @type {*}
+         */
+        var colorName = getBackColorFromID(userList.users[i]._color);
+        var pathImage = 'img/' + colorName + '.png';
+        $scope.$apply($scope.personList[i].pathImage = pathImage);
+
+        /**
+         * Alert treatment
+         * @type {zeze}
+         */
+
+        //var alertZone = hasHadZoneAlert(userList.users[i]._id);
+        //var alertHF= hasHadFrequencyAlert(userList.users[i]._id);
+
+        var alertZone = false;
+        if ($scope.outOfZoneAlert.indexOf(userList.users[i]._id) >= 0) alertZone = true;
+
+        console.log("alertzone: ", alertZone);
+        var alertHF = false;
+        if ($scope.heartFrequencyAlert.indexOf(userList.users[i]._id) >= 0) alertHF = true;
+
         var marker = new google.maps.Marker({
           position: {lat: x2, lng: y2},
           map: map,
@@ -182,14 +205,12 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
         /**
          * Out of zone alert.
          */
-
-        if (dist >= constants.radius && alert) {
+        if (dist >= constants.radius && !alertZone) {
           var audio = new Audio('sound/alert.mp3');
-          /*
-          audio.loop=true;
-          audio.play();*/
-          alert = false;
 
+          audio.loop = true;
+          audio.play();
+          $scope.$apply($scope.outOfZoneAlert.push(userList.users[i]._id));
           var confirmPopup = $ionicPopup.confirm({
             title: 'Alerte',
             template: 'Une personne est sortie de la zône'
@@ -198,7 +219,8 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
           confirmPopup.then(function (res) {
             if (res) {
               console.log('You are sure');
-              alert = true;
+              //alert = true;
+              audio.pause();
             } else {
               console.log('You are not sure');
             }
@@ -208,24 +230,27 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
         /**
          * Heart Frequency alert.
          */
-        if(userList.users[i]._frequency> constants.maxFrequency){
+        if (userList.users[i]._frequency > constants.maxFrequency && !alertHF) {
 
           var audio = new Audio('sound/alert.mp3');
-         /* audio.play();
-          alert = false;*/
 
-          var color=getBackColorFromID(userList.users[i]._color);
-          var colorInFrench= translateColor(color);
+          audio.loop = true;
+          audio.play();
+
+          $scope.$apply($scope.heartFrequencyAlert.push(userList.users[i]._id));
+          var color = getBackColorFromID(userList.users[i]._color);
+          var colorInFrench = translateColor(color);
 
           var confirmPopup = $ionicPopup.confirm({
             title: 'Alerte',
-            template: 'La personne '+colorInFrench+' a une fréquence cardiaque trop élevée'
+            template: 'La personne ' + colorInFrench + ' a une fréquence cardiaque trop élevée'
           });
 
           confirmPopup.then(function (res) {
             if (res) {
               console.log('You are sure');
               alert = true;
+              audio.pause();
             } else {
               console.log('You are not sure');
             }
@@ -240,24 +265,24 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
      * @param id
      * @returns {*}
      */
-    function getBackColorFromID(id){
-      switch(id){
+    function getBackColorFromID(id) {
+      switch (id) {
         case 0:
-              return "yellow";
+          return "yellow";
         case 1:
-              return "lightblue";
+          return "lightblue";
         case 2:
-              return "blue";
+          return "blue";
         case 3:
-              return "green";
+          return "green";
         case 4:
-              return "purple";
+          return "purple";
         case 5:
-              return "pink";
+          return "pink";
         case 6:
-              return "brown";
+          return "brown";
         default:
-              console.log("Error of the color id");
+          console.log("Error of the color id");
       }
     }
 
@@ -266,8 +291,8 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
      * @param color
      * @returns {*}
      */
-    function translateColor(color){
-      switch(color){
+    function translateColor(color) {
+      switch (color) {
         case "yellow":
           return "jaune";
         case "lightblue" :
@@ -285,6 +310,18 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
         default:
           console.log("Error in the color translation");
       }
+
+      function hasHadZoneAlert(id) {
+        console.log("je rentre has had zone alert");
+        if ($scope.outOfZoneAlert.contains(id)) return true;
+        return false;
+      }
+
+      function hasHadFrequencyAlert(id) {
+        if ($scope.heartFrequencyAlert.contains(id)) return true;
+        return false;
+      }
+
     }
   }, function (error) {
     console.log("Could not get location");
