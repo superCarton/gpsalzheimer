@@ -1,10 +1,13 @@
 package polytech.gpsalzheimer;
 
-import android.app.Activity;
-import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.wearable.view.DotsPageIndicator;
-import android.support.wearable.view.GridViewPager;
+import android.support.wearable.activity.WearableActivity;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -14,47 +17,36 @@ import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * The activity on the android wear
+ * It displays the heart rate and send it to the smartphone connected
+ */
+public class MainActivity extends WearableActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, MessageApi.MessageListener, SensorEventListener {
 
-public class MainActivity extends Activity  implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, MessageApi.MessageListener{
-
-    private GridViewPager pager;
-    private DotsPageIndicator dotsPageIndicator;
-
-    //la liste des éléments à afficher
-    private List<Element> elementList;
-
+    private TextView mTextView;
     protected GoogleApiClient mApiClient;
+
+    //Sensor and SensorManager
+    Sensor mHeartRateSensor;
+    SensorManager mSensorManager;
+
+    private int heartFrequency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
+        mTextView = (TextView) findViewById(R.id.text);
 
-        pager = (GridViewPager) findViewById(R.id.pager);
-        dotsPageIndicator = (DotsPageIndicator) findViewById(R.id.page_indicator);
-        dotsPageIndicator.setPager(pager);
+        // enable to go in ambiant mode : run all the time
+        setAmbientEnabled();
 
-        elementList = creerListElements();
+        // Sensor and sensor manager
+        mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
+        mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
 
-        pager.setAdapter(new ElementGridPagerAdapter(elementList, getFragmentManager()));
-    }
-
-    /**
-     * Créé une liste d'éléments pour l'affichage
-     */
-    private List<Element> creerListElements() {
-        List<Element> list = new ArrayList<>();
-
-        list.add(new Element("Element 1", "Description 1", Color.parseColor("#F44336")));
-        list.add(new Element("Element 2","Description 2", Color.parseColor("#E91E63")));
-        list.add(new Element("Element 3","Description 3", Color.parseColor("#9C27B0")));
-        list.add(new Element("Element 4", "Description 4", Color.parseColor("#673AB7")));
-        list.add(new Element("Element 5","Description 5", Color.parseColor("#3F51B5")));
-        list.add(new Element("Element 6", "Description 6", Color.parseColor("#2196F3")));
-
-        return list;
+        heartFrequency = 0;
     }
 
     /**
@@ -118,7 +110,7 @@ public class MainActivity extends Activity  implements GoogleApiClient.Connectio
         Wearable.MessageApi.addListener(mApiClient, this);
 
         //envoie le premier message
-        sendMessage("bonjour","smartphone");
+        sendMessage("bonjour", "smartphone");
     }
 
     @Override
@@ -135,13 +127,69 @@ public class MainActivity extends Activity  implements GoogleApiClient.Connectio
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    //nous affichons ici dans notre viewpager
-                    elementList = new ArrayList<>();
-                    elementList.add(new Element("Message reçu",message,Color.parseColor("#F44336")));
-                    pager.setAdapter(new ElementGridPagerAdapter(elementList,getFragmentManager()));
+
+
                 }
             });
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Register the listener
+        if (mSensorManager != null){
+            mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            Log.i("HEART", "on resume");
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        Log.i("HEART", "on pause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy(){
+
+        //Unregister the listener
+        if (mSensorManager!=null){
+            mSensorManager.unregisterListener(this);
+            Log.i("HEART", "on destroy");
+        }
+        super.onDestroy();
+    }
+
+    /**
+     * Event that the heart frequency changed
+     * @param event
+     */
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        //Update your data.
+        if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
+
+            Log.i("HEART", "" + event.values[0]);
+            heartFrequency = (int) event.values[0];
+
+            // send frequency to the smartphone
+            sendMessage("frequency", "" + heartFrequency);
+
+            // display it on the watch
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mTextView.setText(String.valueOf(heartFrequency));
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
 }
