@@ -164,7 +164,6 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
         var colorName= getBackColorFromID(userList.users[i]._color);
         var pathImage='img/'+colorName+'.png';
         $scope.$apply( $scope.personList[i].pathImage=pathImage);
-        console.log('in for2: personList with path: ', $scope.personList[i]);
         var marker = new google.maps.Marker({
           position: {lat: x2, lng: y2},
           map: map,
@@ -203,7 +202,6 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
      * @returns {*}
      */
     function getBackColorFromID(id){
-      console.log("id: ",id);
       switch(id){
         case 0:
               return "yellow";
