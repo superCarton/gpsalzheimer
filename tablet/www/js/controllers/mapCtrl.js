@@ -182,11 +182,12 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
         /**
          * Out of zone alert.
          */
+
         if (dist >= constants.radius && alert) {
           var audio = new Audio('sound/alert.mp3');
+          /*
           audio.loop=true;
-          audio.play();
-
+          audio.play();*/
           alert = false;
 
           var confirmPopup = $ionicPopup.confirm({
@@ -210,8 +211,8 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
         if(userList.users[i]._frequency> constants.maxFrequency){
 
           var audio = new Audio('sound/alert.mp3');
-          audio.play();
-          alert = false;
+         /* audio.play();
+          alert = false;*/
 
           var color=getBackColorFromID(userList.users[i]._color);
           var colorInFrench= translateColor(color);
