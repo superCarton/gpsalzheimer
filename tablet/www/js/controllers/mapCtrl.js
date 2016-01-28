@@ -207,9 +207,12 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
           audio.loop = true;
           audio.play();
           $scope.$apply($scope.outOfZoneAlert.push(userList.users[i]._id));
+          var color = getBackColorFromID(userList.users[i]._color);
+          var colorInFrench = translateColor(color);
+
           var confirmPopup = $ionicPopup.confirm({
             title: 'Alerte',
-            template: 'Une personne est sortie de la zône'
+            template: 'La personne en ' + colorInFrench + ' sur la carte est sortie de la zône'
           });
 
           confirmPopup.then(function (res) {
@@ -219,6 +222,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
               audio.pause();
             } else {
               console.log('You are not sure');
+              audio.pause();
             }
           });
         }
@@ -249,6 +253,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
               audio.pause();
             } else {
               console.log('You are not sure');
+              audio.pause();
             }
           });
         }
