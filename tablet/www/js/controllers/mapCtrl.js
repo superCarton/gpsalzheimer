@@ -12,7 +12,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
   });
 
 
-  $scope.personList = [];
+  $scope.personList = new Array();
   $scope.markerList = new Array();
 
   var socket;
@@ -24,21 +24,25 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
     console.log('Error connecting to server');
   });
 
-  socket.on("updateUsers", function (params) {
-    if (params !== {}) {
-      console.log("--------------start update users ---------------");
-      console.log("personne list 1: ", $scope.personList);
-      $scope.personList = new Array("check", "autre");
-      //$scope.personList = params.users;
-      console.log("personne list 2: ", $scope.personList);
-      console.log('scope person list:', $scope.personList);
-      //initMarkers(params);
-    }
-  });
+
+
 
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
     $ionicLoading.hide();
+
+    socket.on("updateUsers", function (params) {
+      if (params !== {}) {
+        console.log("--------------start update users ---------------");
+        console.log("personne list 1: ", $scope.personList);
+        // $scope.personList = new Array("check", "autre");
+        $scope.personList = params.users;
+        $scope.params = params;
+        console.log("personne list 2: ", $scope.personList);
+        console.log('scope person list:', $scope.personList);
+        initMarkers(params);
+      }
+    });
 
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
@@ -141,7 +145,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
       });
     }
 
-    function listenPerson(socket) {
+   /* function listenPerson(socket) {
       socket.on("updateGpsData", function (params) {
         if (params !== {}) {
           console.log('listenPerson', params);
@@ -149,7 +153,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
         }
       });
     }
-
+*/
 
   }, function (error) {
     console.log("Could not get location");
