@@ -9,7 +9,7 @@
 
     <string name="connected">Vous êtes connectés</string>
     <string name="smartphone_connected">Smartphone connecté</string>
-    <string name="smartphone_waiting_tab">Smartphone en attente de la tablette</string>
+    <string name="smartphone_waiting_tab">Smartphone prêt !</string>
     <string name="disconnect">Déconnecter le smartphone</string>
 
 </resources>

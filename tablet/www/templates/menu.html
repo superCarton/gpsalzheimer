@@ -1,4 +1,4 @@
-<ion-content id="menu" ng-controller="MenuCtrl as Menu">
+<ion-content id="menu">
   <div class="bar bar-header">
     <h1 class="title">Menu</h1>
   </div>
@@ -6,9 +6,8 @@
   <br/>
   <br/>
   <br/>
-  {{Menu.personList}}
   <ion-list>
-    <ion-item class="item" ng-repeat="person in Menu.personList">
+    <ion-item class="item" ng-repeat="person in personList">
 
       <div class="globalItem row">
         <div class="imagecontainer col ">
@@ -28,48 +27,45 @@
         </div>
       </div>
     </ion-item>
-<!--
-    <ion-item class="item">
-      <div class="globalItem row">
-        <div class="imagecontainer col ">
-          <ion-thumbnail item-left>
-            <img class="localisationimg" src="img/localisation2.png">
-          </ion-thumbnail>
-        </div>
-
-        <div class="buttoncontainer col col-75">
-          <button class="button button-full button-positive">
-            <div class="row">
-              <div class="ion-heart col col-50"></div>
-              <div class="row divlabelFQ"><span class="labelFQ">Fréquence cardiaque</span></div>
-              <div class="rox"><span class="fcvalue col col-50">124</span></div>
+    <!--
+        <ion-item class="item">
+          <div class="globalItem row">
+            <div class="imagecontainer col ">
+              <ion-thumbnail item-left>
+                <img class="localisationimg" src="img/localisation2.png">
+              </ion-thumbnail>
             </div>
-          </button>
-        </div>
-      </div>
-    </ion-item>
-    <ion-item class="item">
-      <div class="globalItem row">
-        <div class="imagecontainer col  ">
-          <ion-thumbnail item-left>
-            <img class="localisationimg" src="img/localisation3.png">
-          </ion-thumbnail>
-        </div>
 
-        <div class="buttoncontainer col col-75">
-          <button class="button button-full button-positive">
-            <div class="row">
-              <div class="ion-heart col col-50"></div>
-              <div class="row divlabelFQ"><span class="labelFQ">Fréquence cardiaque</span></div>
-              <div class="rox"><span class="fcvalue col col-50">124</span></div>
+            <div class="buttoncontainer col col-75">
+              <button class="button button-full button-positive">
+                <div class="row">
+                  <div class="ion-heart col col-50"></div>
+                  <div class="row divlabelFQ"><span class="labelFQ">Fréquence cardiaque</span></div>
+                  <div class="rox"><span class="fcvalue col col-50">124</span></div>
+                </div>
+              </button>
             </div>
-          </button>
-        </div>
-      </div>
-    </ion-item>-->
+          </div>
+        </ion-item>
+        <ion-item class="item">
+          <div class="globalItem row">
+            <div class="imagecontainer col  ">
+              <ion-thumbnail item-left>
+                <img class="localisationimg" src="img/localisation3.png">
+              </ion-thumbnail>
+            </div>
+
+            <div class="buttoncontainer col col-75">
+              <button class="button button-full button-positive">
+                <div class="row">
+                  <div class="ion-heart col col-50"></div>
+                  <div class="row divlabelFQ"><span class="labelFQ">Fréquence cardiaque</span></div>
+                  <div class="rox"><span class="fcvalue col col-50">124</span></div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </ion-item>-->
 
   </ion-list>
-
-  </div>
 </ion-content>
-

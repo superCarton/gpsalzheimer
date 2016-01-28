@@ -8,7 +8,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
   .config(function($stateProvider, $urlRouterProvider) {
 
     $stateProvider
-      .state('map', {
+      .state('home', {
         url: '/',
         templateUrl: 'templates/home.html',
         controller: 'MapCtrl'
@@ -39,4 +39,4 @@ angular.module('starter', ['ionic', 'ngCordova'])
   })
 
 
-})
+});

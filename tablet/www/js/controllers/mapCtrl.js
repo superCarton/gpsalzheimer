@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordovaGeolocation, $ionicLoading, constants) {
+angular.module('starter').controller('MapCtrl', function ($scope, constants, $ionicLoading, $cordovaGeolocation) {
   var options = {timeout: 10000, enableHighAccuracy: true};
   // Setup the loader
   $ionicLoading.show({
@@ -15,21 +15,32 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
   $scope.personList = new Array();
   $scope.markerList = new Array();
 
-  var socket;
-  socket = io.connect(constants.backendUrl, function () {
-    console.log("Connection success");
-  });
-
-  socket.io.on('connect_error', function (err) {
-    console.log('Error connecting to server');
-  });
-
-
-
-
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
     $ionicLoading.hide();
+
+    var socket;
+    socket = io.connect(constants.backendUrl, function () {
+      console.log("Connection success");
+    });
+
+    socket.io.on('connect_error', function (err) {
+      console.log('Error connecting to server');
+    });
+
+    socket.on("updateUsers", function (params) {
+      console.log(params.users);
+      if (params !== {}) {
+        //console.log("--------------start update users ---------------");
+        //console.log("personne list 1: ", $scope.personList);
+        //$scope.personList = new Array("check", "autre");
+        $scope.$apply(function() { $scope.personList = params.users; });
+        //$scope.personList = params.users;
+        //console.log("personne list 2: ", $scope.personList);
+        //console.log('scope person list:', $scope.personList);
+        initMarkers(params);
+      }
+    });
 
     socket.on("updateUsers", function (params) {
       if (params !== {}) {
@@ -48,7 +59,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
 
     //$scope.map;
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 18,
+      zoom: 20,
       center: latLng
     });
 
@@ -97,7 +108,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, $state, $cordo
      * Function cleanMarkers. This function is used to clean our marker (make them disapear on the map). To ensure this action,
      * the parameter map has to be null.
      * @param map
-     * */
+     **/
     function cleanMarkers(map) {
       for (var i = 0; i < $scope.markerList.length; i++) {
         $scope.markerList[i].setMap(map);
