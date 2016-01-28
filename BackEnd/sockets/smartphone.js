@@ -108,6 +108,7 @@ smartphoneSocket.on('connect', function (socket) {
      * @param params
      */
     function frequencyData (params) {
+        console.log(params.freq);
         handle.frequencyData(params.id, params.freq);
     }
 

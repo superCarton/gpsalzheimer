@@ -20,9 +20,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
     $ionicLoading.hide();
 
     var socket;
-    socket = io.connect(constants.backendUrl, function () {
-      console.log("Connection success");
-    });
+    socket = io.connect(constants.backendUrl, {"path":"/gpsalzheimer/socket.io"});
 
     socket.io.on('connect_error', function (err) {
       console.log('Error connecting to server');
