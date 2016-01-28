@@ -146,6 +146,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
 
     var alert = true;
 
+
     /**
      * Function initMarkers. This function initializes the marker on the map (used to see user localisation) according to the
      * list of people we have.
@@ -158,6 +159,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
       }
 
       $scope.markerList = new Array();
+
       for (var i = 0; i < userList.users.length; i++) {
         var x2 = userList.users[i]._position._latitude;
         var y2 = userList.users[i]._position._longitude;
@@ -171,16 +173,52 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
         });
         allMarker.push(marker);
 
-        // 100000 pour le transformer en mettre
+        /**
+         * We multiply by 100000 to have a distance in meter.
+         * @type {number}
+         */
         var dist = 100000 * Distance(x1, y1, x2, y2);
 
+        /**
+         * Out of zone alert.
+         */
         if (dist >= constants.radius && alert) {
+          var audio = new Audio('sound/alert.mp3');
+          audio.loop=true;
+          audio.play();
 
           alert = false;
 
           var confirmPopup = $ionicPopup.confirm({
-            title: 'ALERT DANER',
-            template: 'SORTIE ZONE'
+            title: 'Alerte',
+            template: 'Une personne est sortie de la zône'
+          });
+
+          confirmPopup.then(function (res) {
+            if (res) {
+              console.log('You are sure');
+              alert = true;
+            } else {
+              console.log('You are not sure');
+            }
+          });
+        }
+
+        /**
+         * Heart Frequency alert.
+         */
+        if(userList.users[i]._frequency> constants.maxFrequency){
+
+          var audio = new Audio('sound/alert.mp3');
+          audio.play();
+          alert = false;
+
+          var color=getBackColorFromID(userList.users[i]._color);
+          var colorInFrench= translateColor(color);
+
+          var confirmPopup = $ionicPopup.confirm({
+            title: 'Alerte',
+            template: 'La personne '+colorInFrench+' a une fréquence cardiaque trop élevée'
           });
 
           confirmPopup.then(function (res) {
@@ -219,6 +257,32 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
               return "brown";
         default:
               console.log("Error of the color id");
+      }
+    }
+
+    /**
+     * Function translateColor. This function returns the translation of the color specifies in parameter.
+     * @param color
+     * @returns {*}
+     */
+    function translateColor(color){
+      switch(color){
+        case "yellow":
+          return "jaune";
+        case "lightblue" :
+          return "bleu ciel";
+        case "blue":
+          return "bleu";
+        case "green":
+          return "vert";
+        case "purple":
+          return "violet";
+        case "pink":
+          return "rose";
+        case "brown":
+          return "marron";
+        default:
+          console.log("Error in the color translation");
       }
     }
   }, function (error) {

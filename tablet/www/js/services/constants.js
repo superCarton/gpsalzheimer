@@ -20,7 +20,8 @@ angular.module('starter')
   .constant('constants', {
     backendUrl : 'http://sparks-vm19.i3s.unice.fr/gpsalzheimer/tablet', // L'adresse du serveur.
    // backendUrl :'http://192.168.1.4:3000/tablet',
-    radius:70
+    radius:1,
+    maxFrequency:110
   });
 
 
