@@ -19,6 +19,7 @@ public class SocketGPS {
 
     //private final String SOCKET_ADDR = "http://10.212.103.206:3000/smartphone";
    private final String SOCKET_ADDR = "http://sparks-vm19.i3s.unice.fr/gpsalzheimer/smartphone";
+    //private final String SOCKET_ADDR = "http://192.168.1.4:3000/smartphone";
 
     private com.github.nkzawa.socketio.client.Socket mSocket;
 
@@ -95,10 +96,17 @@ public class SocketGPS {
 
         if (mSocket.connected()) {
 
-            Log.i("socketio", "disconnect tab emit");
-
             this.contextConnected = contextConnected;
-            mSocket.emit("disconnectable", "{id:" + smartphoneid + "}");
+
+            JSONObject json = new JSONObject();
+            try {
+                json.put("id", smartphoneid);
+                mSocket.emit("disconnectable", json);
+                Log.i("socketio", "disconnect tab emit");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
         } else {
             Log.i("socketio", "error not connected");
@@ -111,9 +119,21 @@ public class SocketGPS {
 
             if (smartphoneid != -1){
 
-                Log.i("socketio", "gpsData emit");
 
-                mSocket.emit("gpsData", "{id:" + smartphoneid + ", lat:" + latitude + ", long:" + longitude + "}");
+                JSONObject json = new JSONObject();
+
+                try {
+                    json.put("id", smartphoneid);
+                    json.put("lat", latitude);
+                    json.put("long", longitude);
+
+                    mSocket.emit("gpsData", json);
+                    Log.i("socketio", "gpsData emit (lat:" + latitude + ", long:" + longitude + ")");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
 
             } else {
                 Log.i("socketio", "gpsData not emit smartphone not connected");
@@ -128,9 +148,18 @@ public class SocketGPS {
 
         if (mSocket.connected()) {
 
-            Log.i("socketio", "frequencyData emit");
+            if (smartphoneid != -1) {
 
-            mSocket.emit("frequencyData", "{id:" + smartphoneid + ", freq:" + freq + "}");
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("id", smartphoneid);
+                    json.put("freq", freq);
+                    mSocket.emit("frequencyData", json);
+                    Log.i("socketio", "frequencyData emit " + freq);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
         } else {
             Log.i("socketio", "error not connected");
@@ -155,6 +184,8 @@ public class SocketGPS {
 
                         color = ColorGPS.fromId(data.getInt("color"));
                         smartphoneid = data.getInt("id");
+
+                        Log.i("socketio", "My ID is " + smartphoneid);
 
                     } catch (JSONException e) {
                         return;
@@ -186,6 +217,7 @@ public class SocketGPS {
 
                     // start the connected activity
                     Intent i = new Intent(contextConnected, MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     contextConnected.startActivity(i);
 
                 }

@@ -1,11 +1,9 @@
 package polytech.gpsalzheimer;
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +14,13 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+
 public class ConnectedActivity extends AppCompatActivity {
 
     private SocketGPS socketGPS;
     private ProgressBar progressBar;
     private TextView textView;
     private Button disconnectBtn;
-    private BroadcastReceiver broadcastReceiver;
     private LocationListener locationListener;
     private LocationManager locationManager;
 
@@ -47,10 +45,18 @@ public class ConnectedActivity extends AppCompatActivity {
         textView.setText(getString(R.string.smartphone_waiting_tab));
         textView.setBackgroundColor(getResources().getColor(socketGPS.getColor().getColor()));
 
-        // TODO delete it
+        // send the first position
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        final Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        if (lastKnownLocation!=null){
+            double latitude =  lastKnownLocation.getLatitude();
+            double longitude =  lastKnownLocation.getLongitude();
+            SocketGPS.getInstance().sendGPSData(latitude, longitude);
+        }
+
         locationListener = new GPSLocationListener();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0, locationListener); // each 500ms
 
         disconnectBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -59,9 +65,8 @@ public class ConnectedActivity extends AppCompatActivity {
 
                 Log.i("GPS", "Click on disconnect button");
 
-                new AlertDialog.Builder(getBaseContext())
+                new AlertDialog.Builder(ConnectedActivity.this)
                         .setTitle(R.string.disconnect_confirm_title)
-                        .setMessage(R.string.disconnect_confirm_message)
                         .setPositiveButton(R.string.disconnect_confirm_yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -89,36 +94,41 @@ public class ConnectedActivity extends AppCompatActivity {
     public void onResume(){
 
         super.onResume();
-        registerBroadcastReceivers();
     }
 
     @Override
     public void onStop(){
 
-        unregisterReceiver(broadcastReceiver);
         super.onStop();
     }
 
-    private void registerBroadcastReceivers() {
+    @Override
+    protected void onDestroy(){
 
-        // listening to the event waiting to connect
-        broadcastReceiver = new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                textView.setText(getString(R.string.smartphone_connected));
-
-                // set the location listener
-                // TODO uncomment it and delete in oncretae
-               /* LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                locationListener = new GPSLocationListener();
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener); */
-            }
-        };
-
-        IntentFilter progressfilter = new IntentFilter(Events.ADDED_ON_TAB);
-        registerReceiver(broadcastReceiver, progressfilter);
+        SocketGPS.getInstance().disconnectToTab(this);
+        super.onDestroy();
     }
+
+    private class GPSLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location loc) {
+
+            double latitude =  loc.getLatitude();
+            double longitude =  loc.getLongitude();
+
+            SocketGPS.getInstance().sendGPSData(latitude, longitude);
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {}
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+    }
+
 
 }

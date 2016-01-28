@@ -11,13 +11,16 @@
  *  }]);
  *
  * @ngdoc service
- * @name frontEndOpenEatApp.constants
+ * @name starter.constants
  * @description
  * # constants
- * Constant in the frontEndOpenEatApp.
+ * Constant in the starter.
  */
 angular.module('starter')
-  .constant('constants', {
-   backendUrl : 'http://sparks-vm19.i3s.unice.fr/gpsalzheimer/tablet' // L'adresse du serveur.
-    //backendUrl :'http://192.168.1.4:3000/tablet',
-  });
+       .constant('constants', {
+         backendUrl: 'http://sparks-vm19.i3s.unice.fr/gpsalzheimer/tablet', // L'adresse du serveur.
+         // backendUrl :'http://192.168.1.4:3000/tablet',
+         radius    : 70
+       });
+
+
