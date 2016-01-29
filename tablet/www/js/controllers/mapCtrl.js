@@ -36,7 +36,6 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
       if (params !== {}) {
         $scope.$apply(function () {
           $scope.personList = params.users;
-          console.log("params", params);
         });
         initMarkers(params);
       }
