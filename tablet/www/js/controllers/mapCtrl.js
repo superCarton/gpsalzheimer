@@ -201,7 +201,7 @@ angular.module('starter').controller('MapCtrl', function ($scope, constants, $io
         /**
          * Out of zone alert.
          */
-        if (dist >= constants.radius && !alertZone) {
+        if (dist >= constants.radius && !alertZone && x2!=0 && y2!=0) {
           var audio = new Audio('sound/alert.mp3');
 
           audio.loop = true;
