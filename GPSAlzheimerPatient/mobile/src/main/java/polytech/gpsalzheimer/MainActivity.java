@@ -11,6 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+
+/**
+ * THe main activity is the activity when the user start the app
+ * It allows to connect the smartphone to the server
+ */
 public class MainActivity extends AppCompatActivity {
 
     private SocketGPS socketGPS;

@@ -17,12 +17,17 @@ import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
+import java.util.Random;
+
 /**
  * The activity on the android wear
  * It displays the heart rate and send it to the smartphone connected
+ *
+ *  Created by Romain Guillot on 18/01/15
  */
 public class MainActivity extends WearableActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, MessageApi.MessageListener, SensorEventListener {
 
+    private final static String PATH = "polytech.gpsalzheimer.frequency";
     private TextView mTextView;
     protected GoogleApiClient mApiClient;
 
@@ -139,7 +144,7 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
         super.onResume();
         //Register the listener
         if (mSensorManager != null){
-            mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_STATUS_ACCURACY_LOW);
             Log.i("HEART", "on resume");
         }
     }
@@ -171,24 +176,49 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
         //Update your data.
         if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
 
-            Log.i("HEART", "" + event.values[0]);
-            heartFrequency = (int) event.values[0];
+            int newHeartFreq = (int) event.values[0];
+            Log.i("HEART", "" + newHeartFreq);
 
-            // send frequency to the smartphone
-            sendMessage("frequency", "" + heartFrequency);
+            if (newHeartFreq != heartFrequency){
+                heartFrequency = newHeartFreq;
 
-            // display it on the watch
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mTextView.setText(String.valueOf(heartFrequency));
-                }
-            });
+                // send frequency to the smartphone
+                sendMessage(PATH, "" + heartFrequency);
+
+                // display it on the watch
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mTextView.setText(String.valueOf(heartFrequency));
+                    }
+                });
+            }
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    /**
+     * Fake method if the sensor is bad
+     */
+    private void generateNewRandomFrequency(){
+
+        int min = 1;
+        int max = 3;
+
+        Random rand = new Random();
+        int variation = rand.nextInt((max - min) + 1) + min;
+
+        boolean variationSign = rand.nextBoolean();
+
+        // if variationSign is true, add the variation
+        if (variationSign){
+            heartFrequency += variation;
+        } else {
+            heartFrequency -= variation;
+        }
 
     }
 

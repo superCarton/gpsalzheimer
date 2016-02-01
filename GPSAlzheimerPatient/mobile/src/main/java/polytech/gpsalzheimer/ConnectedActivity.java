@@ -14,7 +14,15 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
+/**
+ * This is the activity when a user is connected to the server
+ * At the top of the screen there is the color of the smartphone on the frontend
+ * At the bottom there is a button to disconnect the smartphone
+ *
+ * This activity send events with the GPS position of the user to the server
+ *
+ *  Created by Romain Guillot on 18/01/15
+ */
 public class ConnectedActivity extends AppCompatActivity {
 
     private SocketGPS socketGPS;
@@ -55,6 +63,7 @@ public class ConnectedActivity extends AppCompatActivity {
             SocketGPS.getInstance().sendGPSData(latitude, longitude);
         }
 
+        // set the location listener
         locationListener = new GPSLocationListener();
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0, locationListener); // each 500ms
 
@@ -82,6 +91,8 @@ public class ConnectedActivity extends AppCompatActivity {
     }
 
     public void disconnectToTab(){
+
+        // disconnect GPS listener
         locationManager.removeUpdates(locationListener);
         locationListener = null;
 
@@ -109,6 +120,7 @@ public class ConnectedActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    // GPS listener private class
     private class GPSLocationListener implements LocationListener {
 
         @Override

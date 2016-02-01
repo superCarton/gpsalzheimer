@@ -13,6 +13,10 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 
 /**
+ *
+ * Class used to manage the socket (IO) with the server
+ * Connect to SOCKET_ADDR, set receivers and emit events
+ *
  * Created by Romain Guillot on 18/01/16.
  */
 public class SocketGPS {
@@ -54,6 +58,9 @@ public class SocketGPS {
         return color;
     }
 
+    /**
+     * Open the socket
+     */
     public void connectServer(){
         if (!mSocket.connected()){
 
@@ -66,6 +73,9 @@ public class SocketGPS {
         }
     }
 
+    /**
+     * Close the socket
+     */
     public void disconnectServer(){
         if (mSocket.connected()){
 
@@ -78,6 +88,10 @@ public class SocketGPS {
         }
     }
 
+    /**
+     * Emit the event to connect the smartphone
+     * @param contextMain the actual context (activity)
+     */
     public void connectToTab(Context contextMain){
 
         if (mSocket.connected()) {
@@ -92,6 +106,10 @@ public class SocketGPS {
         }
     }
 
+    /**
+     * Emit the event to disconnect the smartphone
+     * @param contextConnected the actual context (activity)
+     */
     public void disconnectToTab(Context contextConnected){
 
         if (mSocket.connected()) {
@@ -113,6 +131,11 @@ public class SocketGPS {
         }
     }
 
+    /**
+     * Emit the event with the GPS position of the user
+     * @param latitude of the user
+     * @param longitude of the user
+     */
     public void sendGPSData(double latitude, double longitude){
 
         if (mSocket.connected()) {
@@ -144,6 +167,10 @@ public class SocketGPS {
         }
     }
 
+    /**
+     * Emit the event to the server with the heart frequency of the user
+     * @param freq heart frequency
+     */
     public void sendFreqData(double freq){
 
         if (mSocket.connected()) {
@@ -166,6 +193,9 @@ public class SocketGPS {
         }
     }
 
+    /**
+     * connect event listener
+     */
     private Emitter.Listener connectAchieve = new Emitter.Listener() {
 
         @Override
@@ -182,6 +212,7 @@ public class SocketGPS {
 
                     try {
 
+                        // get the color and the id assigned to the smartphone by the server
                         color = ColorGPS.fromId(data.getInt("color"));
                         smartphoneid = data.getInt("id");
 
@@ -201,6 +232,9 @@ public class SocketGPS {
         }
     };
 
+    /**
+     * Disconnect event listener
+     */
     private Emitter.Listener disconnectAchieve = new Emitter.Listener() {
 
         @Override
@@ -226,6 +260,9 @@ public class SocketGPS {
         }
     };
 
+    /**
+     * Deprecated
+     */
     private Emitter.Listener addedOnTab = new Emitter.Listener() {
 
         @Override

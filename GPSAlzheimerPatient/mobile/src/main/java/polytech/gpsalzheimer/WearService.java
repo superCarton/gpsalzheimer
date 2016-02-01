@@ -14,10 +14,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
+ *
+ * Service that communicates with the smart watch
+ *
  * Created by Romain Guillot on 11/01/16.
  */
 public class WearService extends WearableListenerService {
 
+    private final static String PATH = "polytech.gpsalzheimer.frequency";
     private final static String TAG = WearService.class.getCanonicalName();
 
     protected GoogleApiClient mApiClient;
@@ -56,13 +60,7 @@ public class WearService extends WearableListenerService {
         //traite le message reçu
         final String path = messageEvent.getPath();
 
-        /*
-        if(path.equals("bonjour")) {
-            int random = (int)(Math.random() * 100);
-            sendMessage("bonjour", "affiche :" + random);
-        }*/
-
-        if (path.equals("frequency")){
+        if (path.equals(PATH)){
             String str = new String(messageEvent.getData(), StandardCharsets.UTF_8);
 
             int freq = Integer.parseInt(str);

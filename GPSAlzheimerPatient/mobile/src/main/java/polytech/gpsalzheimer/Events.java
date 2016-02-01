@@ -1,6 +1,8 @@
 package polytech.gpsalzheimer;
 
 /**
+ * String of the events
+ *
  * Created by Romain Guillot on 18/01/16.
  */
 public class Events {

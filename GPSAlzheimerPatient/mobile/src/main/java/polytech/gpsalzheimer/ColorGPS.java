@@ -1,6 +1,8 @@
 package polytech.gpsalzheimer;
 
 /**
+ * Colors of the smartphone for the users
+ *
  * Created by Romain Guillot on 18/01/16.
  */
 public enum ColorGPS {
